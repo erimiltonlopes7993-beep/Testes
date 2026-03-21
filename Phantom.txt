@@ -2062,6 +2062,7 @@ end)
 task.spawn(function()
     local Bridge = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge")
     local Player = game:GetService("Players").LocalPlayer
+    local lastSellCheck = 0
 
     local function getMyBaseName()
         local serverBases = workspace:FindFirstChild("Server") and workspace.Server:FindFirstChild("Bases")
@@ -2076,38 +2077,42 @@ task.spawn(function()
         return nil
     end
 
-    while task.wait(1) do
-        if isAutoSell() then
-            local myBaseName = getMyBaseName()
-            if myBaseName then
-                local clientBases = workspace:FindFirstChild("Client") and workspace.Client:FindFirstChild("Bases")
-                local myClientBase = clientBases and clientBases:FindFirstChild(myBaseName)
-                local slotsFolder = myClientBase and myClientBase:FindFirstChild("Slots")
+    while true do
+        task.wait(0.05)
+        if isAutoSell() and (tick() - lastSellCheck) >= 1 then
+            pcall(function()
+                local myBaseName = getMyBaseName()
+                if myBaseName then
+                    local clientBases = workspace:FindFirstChild("Client") and workspace.Client:FindFirstChild("Bases")
+                    local myClientBase = clientBases and clientBases:FindFirstChild(myBaseName)
+                    local slotsFolder = myClientBase and myClientBase:FindFirstChild("Slots")
 
-                if slotsFolder then
-                    for _, slotModel in pairs(slotsFolder:GetChildren()) do
-                        local uiFrame = slotModel:FindFirstChild("Brainrot_UI") and slotModel.Brainrot_UI:FindFirstChild("Frame")
-                        if uiFrame then
-                            local brNameLabel = uiFrame:FindFirstChild("Title")
-                            local brTypeLabel = uiFrame:FindFirstChild("Type")
-                            local brEarnLabel = uiFrame:FindFirstChild("Earn")
+                    if slotsFolder then
+                        for _, slotModel in pairs(slotsFolder:GetChildren()) do
+                            local uiFrame = slotModel:FindFirstChild("Brainrot_UI") and slotModel.Brainrot_UI:FindFirstChild("Frame")
+                            if uiFrame then
+                                local brNameLabel = uiFrame:FindFirstChild("Title")
+                                local brTypeLabel = uiFrame:FindFirstChild("Type")
+                                local brEarnLabel = uiFrame:FindFirstChild("Earn")
 
-                            if brNameLabel and brEarnLabel then
-                                local brName = brNameLabel.Text
-                                local currentEarn = parseEarnValue(brEarnLabel.Text)
-                                local config = sellTargets[brName]
+                                if brNameLabel and brEarnLabel then
+                                    local brName = brNameLabel.Text
+                                    local currentEarn = parseEarnValue(brEarnLabel.Text)
+                                    local config = sellTargets[brName]
 
-                                if config and config.Active and (currentEarn < minEarnValue) then
-                                    local mutType = (brTypeLabel.Text == "" or brTypeLabel.Text == nil) and "Normal" or brTypeLabel.Text
-                                    if config.Muts[mutType] then
-                                        Bridge:FireServer("General", "Brainrots", "Sell", slotModel.Name)
+                                    if config and config.Active and (currentEarn < minEarnValue) then
+                                        local mutType = (brTypeLabel.Text == "" or brTypeLabel.Text == nil) and "Normal" or brTypeLabel.Text
+                                        if config.Muts[mutType] then
+                                            Bridge:FireServer("General", "Brainrots", "Sell", slotModel.Name)
+                                        end
                                     end
                                 end
                             end
                         end
                     end
                 end
-            end
+            end)
+            lastSellCheck = tick()
         end
     end
 end)
