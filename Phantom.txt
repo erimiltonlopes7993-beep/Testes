@@ -1930,13 +1930,16 @@ end)
 
 task.spawn(function()
     local Bridge = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Bridge")
-    while task.wait(1) do
-        if isAutoCollect() then
+    local lastCollect = 0
+    while true do
+        task.wait(0.05)
+        if isAutoCollect() and (tick() - lastCollect) >= 1 then
             pcall(function()
                 for i = 1, 21 do
                     Bridge:FireServer("General", "Brainrots", "Collect", "Slot" .. i)
                 end
             end)
+            lastCollect = tick()
         end
     end
 end)
