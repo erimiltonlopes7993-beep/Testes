@@ -2235,15 +2235,18 @@ local buyList = {
 
 task.spawn(function()
     local Bridge = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Bridge")
-    while task.wait(1) do
-        if isAnyBuyActive() then
+    local lastBuyCheck = 0
+    while true do
+        task.wait(0.05)
+        if isAnyBuyActive() and (tick() - lastBuyCheck) >= 1 then
             pcall(function()
                 for _, item in ipairs(buyList) do
                     if item.get() then
-                        Bridge:FireServer("General", "Ingredients", "Purchase", item.name)
+                        pcall(function() Bridge:FireServer("General", "Ingredients", "Purchase", item.name) end)
                     end
                 end
             end)
+            lastBuyCheck = tick()
         end
     end
 end)
