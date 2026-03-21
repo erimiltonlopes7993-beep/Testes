@@ -2121,9 +2121,12 @@ task.spawn(function()
     local Bridge = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge")
     local LocalMainModule = nil
     pcall(function() LocalMainModule = require(game:GetService("Players").LocalPlayer.PlayerScripts:WaitForChild("Client"):WaitForChild("Main")) end)
+    local lastSpinCheck = 0
+    local lastSpinTime = 0
 
-    while task.wait(1) do
-        if isAutoSpin() then
+    while true do
+        task.wait(0.05)
+        if isAutoSpin() and (tick() - lastSpinCheck) >= 1 then
             local canSpin = false
             pcall(function()
                 if LocalMainModule and type(LocalMainModule) == "table" and LocalMainModule.Data then
@@ -2138,10 +2141,11 @@ task.spawn(function()
                 end
             end)
 
-            if canSpin then
-                Bridge:FireServer("General", "SpinWheel", "Spin", false)
-                task.wait(5)
+            if canSpin and (tick() - lastSpinTime) >= 5 then
+                pcall(function() Bridge:FireServer("General", "SpinWheel", "Spin", false) end)
+                lastSpinTime = tick()
             end
+            lastSpinCheck = tick()
         end
     end
 end)
