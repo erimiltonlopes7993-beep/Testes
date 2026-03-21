@@ -1621,6 +1621,7 @@ local staffIds = {[4358286401] = true, [4386104527] = true}
 
 game.Players.PlayerAdded:Connect(function(p)
     if isStaffDetector() then
+        task.wait(0.1)
         pcall(function()
             if staffIds[p.UserId] or badRoles[p:GetRoleInGroup(17350197)] then
                 TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
@@ -1628,6 +1629,17 @@ game.Players.PlayerAdded:Connect(function(p)
         end)
     end
 end)
+
+for _, p in pairs(game.Players:GetPlayers()) do
+    if p ~= Player and isStaffDetector() then
+        task.wait(0.1)
+        pcall(function()
+            if staffIds[p.UserId] or badRoles[p:GetRoleInGroup(17350197)] then
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Player)
+            end
+        end)
+    end
+end
 
 local oldNamecall
 oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
