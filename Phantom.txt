@@ -255,6 +255,7 @@ local function connectButtonInput(button, callback)
     end
 
     button.Activated:Connect(execute)
+    button.MouseButton1Click:Connect(execute)
 end
 
 local function createOption(name, startActive, tab, callback)
