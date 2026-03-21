@@ -1917,9 +1917,13 @@ end)
 
 task.spawn(function()
     local Bridge = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Bridge")
-    while task.wait(0.5) do
-        if isAutoRebirth() then
+    local lastExecution = 0
+    while true do
+        task.wait(0.05)
+        local currentTime = tick()
+        if isAutoRebirth() and (currentTime - lastExecution) >= 0.5 then
             pcall(function() Bridge:FireServer("General", "Rebirth", "Use") end)
+            lastExecution = currentTime
         end
     end
 end)
