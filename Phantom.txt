@@ -84,7 +84,8 @@ local inputDebounce = {}
 local function createDebounce(key, duration)
     if inputDebounce[key] then return false end
     inputDebounce[key] = true
-    local adjustedDuration = duration or (UserInputService:GetLastInputType() == Enum.UserInputType.Mouse and 0.1 or 0.05)
+    local inputType = UserInputService:GetLastInputType()
+    local adjustedDuration = duration or (inputType == Enum.UserInputType.Mouse or inputType == Enum.UserInputType.MouseButton1 or inputType == Enum.UserInputType.MouseButton2) and 0.05 or 0.03
     task.delay(adjustedDuration, function() inputDebounce[key] = nil end)
     return true
 end
