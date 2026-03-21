@@ -302,18 +302,19 @@ local function createOption(name, startActive, tab, callback)
     Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
 
     local function toggleSwitch()
-        if createDebounce(name, 0.05) then
-            optionStates[name] = not optionStates[name]
-            setOptionState(name, optionStates[name])
+    if createDebounce(name, 0.05) then
+        optionStates[name] = not optionStates[name]
+        setOptionState(name, optionStates[name])
 
-            Circle:TweenPosition(optionStates[name] and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9), "Out", "Quad", 0.2, true)
-            SwitchBG.BackgroundColor3 = optionStates[name] and Color3.fromRGB(150, 150, 150) or Color3.fromRGB(40, 40, 40)
+        Circle:TweenPosition(optionStates[name] and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9), "Out", "Quad", 0.2, true)
+        SwitchBG.BackgroundColor3 = optionStates[name] and Color3.fromRGB(150, 150, 150) or Color3.fromRGB(40, 40, 40)
 
-            if callback then 
-                task.spawn(function() callback(optionStates[name]) end)
-            end
+        if callback then 
+            task.wait(0.05)
+            task.spawn(function() callback(optionStates[name]) end)
         end
     end
+end
 
     SwitchBG.Activated:Connect(toggleSwitch)
 
