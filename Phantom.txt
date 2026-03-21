@@ -2153,40 +2153,44 @@ end)
 task.spawn(function()
     local Bridge = game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Bridge")
     local Player = game:GetService("Players").LocalPlayer
+    local lastDigCheck = 0
 
-    while task.wait(0.05) do
-        if isAutoDig() then
-            local char = Player.Character
-            if char and char:FindFirstChild("Humanoid") then
-                local shovel = char:FindFirstChildOfClass("Tool")
+    while true do
+        task.wait(0.05)
+        if isAutoDig() and (tick() - lastDigCheck) >= 0.1 then
+            pcall(function()
+                local char = Player.Character
+                if char and char:FindFirstChild("Humanoid") then
+                    local shovel = char:FindFirstChildOfClass("Tool")
 
-                if not (shovel and string.find(shovel.Name, "Shovel")) then
-                    local backpack = Player:FindFirstChild("Backpack")
-                    if backpack then
-                        for _, item in pairs(backpack:GetChildren()) do
-                            if item:IsA("Tool") and string.find(item.Name, "Shovel") then
-                                char.Humanoid:EquipTool(item)
-                                shovel = item
-                                break
+                    if not (shovel and string.find(shovel.Name, "Shovel")) then
+                        local backpack = Player:FindFirstChild("Backpack")
+                        if backpack then
+                            for _, item in pairs(backpack:GetChildren()) do
+                                if item:IsA("Tool") and string.find(item.Name, "Shovel") then
+                                    char.Humanoid:EquipTool(item)
+                                    shovel = item
+                                    break
+                                end
                             end
                         end
                     end
-                end
 
-                if shovel and string.find(shovel.Name, "Shovel") then
-                    local isDigging = Player:GetAttribute("Digging")
-                    local hasCooldown = Player:GetAttribute("Dig_Cooldown")
+                    if shovel and string.find(shovel.Name, "Shovel") then
+                        local isDigging = Player:GetAttribute("Digging")
+                        local hasCooldown = Player:GetAttribute("Dig_Cooldown")
 
-                    if isDigging then
-                        for i = 1, 15 do
-                            Bridge:FireServer("General", "Dig", "Click")
+                        if isDigging then
+                            for i = 1, 15 do
+                                pcall(function() Bridge:FireServer("General", "Dig", "Click") end)
+                            end
+                        elseif not hasCooldown then
+                            pcall(function() Bridge:FireServer("General", "Dig", "Start", 1.9174998539686197) end)
                         end
-                    elseif not hasCooldown then
-                        Bridge:FireServer("General", "Dig", "Start", 1.9174998539686197)
-                        task.wait(0.1)
                     end
                 end
-            end
+            end)
+            lastDigCheck = tick()
         end
     end
 end)
