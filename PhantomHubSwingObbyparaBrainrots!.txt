@@ -191,6 +191,7 @@ local function showNotification(title, iconId, duration)
 	local notificationScreenGui = Instance.new("ScreenGui")
 	notificationScreenGui.Name = "NotificationScreenGui"
 	notificationScreenGui.ResetOnSpawn = false
+	notificationScreenGui.DisplayOrder = 999999
 	notificationScreenGui.Parent = PlayerGui
 	
 	local notificationGui = Instance.new("Frame")
@@ -331,7 +332,7 @@ local function createTab(name, iconId, position)
 
     local TextLabel = Instance.new("TextLabel")
     TextLabel.Size = UDim2.new(0.65, 0, 1, 0)
-    TextLabel.Position = UDim2.new(0.4, 0, position.Y.Scale, position.Y.Offset)
+    TextLabel.Position = UDim2.new(0.4, 0, 0, 0)
     TextLabel.BackgroundTransparency = 1
     TextLabel.Text = name
     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
