@@ -60,6 +60,7 @@ FloatingButton.Text = ""
 FloatingButton.Parent = ScreenGui
 FloatingButton.AutoButtonColor = false
 FloatingButton.ZIndex = 999999
+FloatingButton.TextScaled = true
 
 local FloatingButtonStroke = Instance.new("UIStroke")
 FloatingButtonStroke.Color = Color3.fromRGB(60, 60, 60)
@@ -131,6 +132,7 @@ Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.TextSize = 16
 Title.Parent = TopBar
 Title.ZIndex = 999999
+Title.TextScaled = true
 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
@@ -143,6 +145,7 @@ CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.TextSize = 18
 CloseButton.Parent = TopBar
 CloseButton.ZIndex = 999999
+CloseButton.TextScaled = true
 
 -- ==================== CONTAINER DE ABAS (FIXO) ====================
 local TabContainer = Instance.new("Frame")
@@ -223,6 +226,7 @@ local function showNotification(title, iconId, duration)
 	notificationLabel.TextWrapped = true
 	notificationLabel.TextXAlignment = Enum.TextXAlignment.Left
 	notificationLabel.Parent = notificationGui
+	notificationLabel.TextScaled = true
 
 	local progressLine = Instance.new("Frame")
 	progressLine.Name = "ProgressLine"
@@ -312,6 +316,7 @@ local function createTab(name, iconId, position)
     TabButton.Parent = TabContainer
     TabButton.AutoButtonColor = false
     TabButton.ZIndex = 999999
+    TabButton.TextScaled = true
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 0)
@@ -341,6 +346,7 @@ local function createTab(name, iconId, position)
     TextLabel.TextSize = 14
     TextLabel.Parent = TabButton
     TextLabel.ZIndex = 999999
+    TextLabel.TextScaled = true
 
     TabButton.MouseButton1Click:Connect(function()
         if activeTab ~= name then
@@ -380,7 +386,7 @@ local function createOption(name, startActive, tabName, callback)
     local currentActive = optionStates[name]
 
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(1, -16, 0, 50)
+    Container.Size = UDim2.new(1, 0, 0.08, 0)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.Name = name
@@ -407,15 +413,17 @@ local function createOption(name, startActive, tabName, callback)
     Label.TextSize = 14
     Label.Parent = Container
     Label.ZIndex = 999999
+    Label.TextScaled = true
 
     local SwitchBG = Instance.new("TextButton")
-    SwitchBG.Size = UDim2.new(0, 45, 0, 24)
-    SwitchBG.Position = UDim2.new(1, -55, 0.5, -12)
+    SwitchBG.Size = UDim2.new(0.12, 0, 0.65, 0)
+    SwitchBG.Position = UDim2.new(0.82, 0, 0.175, 0)
     SwitchBG.BackgroundColor3 = currentActive and Color3.fromRGB(100, 150, 200) or Color3.fromRGB(40, 40, 40)
     SwitchBG.Text = ""
     SwitchBG.Parent = Container
     SwitchBG.AutoButtonColor = false
     SwitchBG.ZIndex = 999999
+    SwitchBG.TextScaled = true
 
     local SwitchCorner = Instance.new("UICorner")
     SwitchCorner.CornerRadius = UDim.new(0, 0)
@@ -427,8 +435,8 @@ local function createOption(name, startActive, tabName, callback)
     SwitchStroke.Parent = SwitchBG
 
     local Circle = Instance.new("Frame")
-    Circle.Size = UDim2.new(0, 18, 0, 18)
-    Circle.Position = currentActive and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9)
+    Circle.Size = UDim2.new(0.4, 0, 0.75, 0)
+    Circle.Position = currentActive and UDim2.new(0.55, 0, 0.125, 0) or UDim2.new(0.075, 0, 0.125, 0)
     Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Circle.Parent = SwitchBG
     Circle.ZIndex = 999999
@@ -442,7 +450,7 @@ local function createOption(name, startActive, tabName, callback)
             optionStates[name] = not optionStates[name]
             setOptionState(name, optionStates[name])
 
-            Circle:TweenPosition(optionStates[name] and UDim2.new(1, -21, 0.5, -9) or UDim2.new(0, 3, 0.5, -9), "Out", "Quad", 0.2, true)
+            Circle:TweenPosition(optionStates[name] and UDim2.new(0.55, 0, 0.125, 0) or UDim2.new(0.075, 0, 0.125, 0), "Out", "Quad", 0.2, true)
             SwitchBG.BackgroundColor3 = optionStates[name] and Color3.fromRGB(100, 150, 200) or Color3.fromRGB(40, 40, 40)
 
             if callback then
@@ -475,7 +483,7 @@ local function createSlider(name, min, max, default, tabName, callback)
     local currentVal = optionStates[name]
 
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(1, -16, 0, 70)
+    Container.Size = UDim2.new(1, 0, 0.12, 0)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.ZIndex = 999999
@@ -492,7 +500,7 @@ local function createSlider(name, min, max, default, tabName, callback)
 
     local Label = Instance.new("TextLabel")
     Label.Size = UDim2.new(0.9, 0, 0.4, 0)
-    Label.Position = UDim2.new(0.05, 0, 0, 5)
+    Label.Position = UDim2.new(0.05, 0, 0.05, 0)
     Label.Text = name .. ": " .. tostring(currentVal)
     Label.TextColor3 = Color3.fromRGB(255, 255, 255)
     Label.BackgroundTransparency = 1
@@ -501,15 +509,17 @@ local function createSlider(name, min, max, default, tabName, callback)
     Label.TextSize = 14
     Label.Parent = Container
     Label.ZIndex = 999999
+    Label.TextScaled = true
 
     local SliderBG = Instance.new("TextButton")
-    SliderBG.Size = UDim2.new(0.9, 0, 0, 6)
+    SliderBG.Size = UDim2.new(0.9, 0, 0.08, 0)
     SliderBG.Position = UDim2.new(0.05, 0, 0.5, 0)
     SliderBG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     SliderBG.Text = ""
     SliderBG.Parent = Container
     SliderBG.AutoButtonColor = false
     SliderBG.ZIndex = 999999
+    SliderBG.TextScaled = true
 
     local SliderCorner = Instance.new("UICorner")
     SliderCorner.CornerRadius = UDim.new(0, 0)
@@ -527,8 +537,8 @@ local function createSlider(name, min, max, default, tabName, callback)
     FillCorner.Parent = SliderFill
 
     local Circle = Instance.new("Frame")
-    Circle.Size = UDim2.new(0, 14, 0, 14)
-    Circle.Position = UDim2.new(1, -7, 0.5, -7)
+    Circle.Size = UDim2.new(0.08, 0, 1, 0)
+    Circle.Position = UDim2.new(1, -0.04, 0, 0)
     Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Circle.Parent = SliderFill
     Circle.ZIndex = 999999
@@ -581,7 +591,7 @@ end
 
 local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(1, -16, 0, 50)
+    Container.Size = UDim2.new(1, 0, 0.08, 0)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.ZIndex = 999999
@@ -598,7 +608,7 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
 
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
-    TitleLabel.Position = UDim2.new(0.05, 0, 0, 3)
+    TitleLabel.Position = UDim2.new(0.05, 0, 0.05, 0)
     TitleLabel.Text = title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.BackgroundTransparency = 1
@@ -607,6 +617,7 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     TitleLabel.TextSize = 14
     TitleLabel.Parent = Container
     TitleLabel.ZIndex = 999999
+    TitleLabel.TextScaled = true
 
     local DescLabel = Instance.new("TextLabel")
     DescLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
@@ -619,6 +630,7 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     DescLabel.TextSize = 11
     DescLabel.Parent = Container
     DescLabel.ZIndex = 999999
+    DescLabel.TextScaled = true
 
     if isButton then
         local ClickBtn = Instance.new("TextButton")
@@ -627,6 +639,7 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
         ClickBtn.Text = ""
         ClickBtn.Parent = Container
         ClickBtn.ZIndex = 999999
+        ClickBtn.TextScaled = true
         ClickBtn.MouseButton1Click:Connect(function()
             if type(setclipboard) == "function" then pcall(function() setclipboard(linkToCopy) end) end
             showNotification("Discord Link Copied", "132744109593099", 2.85)
@@ -638,7 +651,7 @@ end
 
 local function createSpecialButton(name, tabName, callback)
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(1, -16, 0, 50)
+    Container.Size = UDim2.new(1, 0, 0.08, 0)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.Name = name
@@ -664,6 +677,7 @@ local function createSpecialButton(name, tabName, callback)
     Label.TextSize = 14
     Label.Parent = Container
     Label.ZIndex = 999999
+    Label.TextScaled = true
 
     Container.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
