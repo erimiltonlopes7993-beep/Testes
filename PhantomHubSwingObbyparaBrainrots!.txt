@@ -51,6 +51,7 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.DisplayOrder = 999999
 ScreenGui.Parent = PlayerGui
 
+-- ==================== BOTÃO FLUTUANTE ====================
 local FloatingButton = Instance.new("TextButton")
 FloatingButton.Size = UDim2.new(0.054, 0, 0.119, 0)
 FloatingButton.Position = UDim2.new(0.02, 0, 0.1, 0)
@@ -73,6 +74,7 @@ BtnLabel.Image = "rbxassetid://121715364276099"
 BtnLabel.Parent = FloatingButton
 BtnLabel.ZIndex = 999999
 
+-- ==================== PAINEL PRINCIPAL ====================
 local ShadowFrame = Instance.new("Frame")
 ShadowFrame.Name = "ShadowFrame"
 ShadowFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -107,6 +109,7 @@ InnerStroke.Thickness = 2
 InnerStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 InnerStroke.Parent = MainFrame
 
+-- ==================== BARRA SUPERIOR ====================
 local TopBar = Instance.new("Frame")
 TopBar.Name = "TopBar"
 TopBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
@@ -120,29 +123,28 @@ local Title = Instance.new("TextLabel")
 Title.Name = "Title"
 Title.BackgroundTransparency = 1
 Title.Position = UDim2.new(0.02, 0, 0, 0)
-Title.Size = UDim2.new(0.28, 0, 1, 0)
+Title.Size = UDim2.new(1, 0, 1, 0)
 Title.Font = Enum.Font.GothamBold
 Title.Text = "Phantom Hub"
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.TextSize = 16
-Title.TextScaled = true
 Title.Parent = TopBar
 Title.ZIndex = 999999
 
 local CloseButton = Instance.new("TextButton")
 CloseButton.Name = "CloseButton"
 CloseButton.BackgroundTransparency = 1
-CloseButton.Position = UDim2.new(0.949, 0, 0, 0)
-CloseButton.Size = UDim2.new(0.025, 0, 1, 0)
+CloseButton.Position = UDim2.new(0.92, 0, 0, 0)
+CloseButton.Size = UDim2.new(0.08, 0, 1, 0)
 CloseButton.Font = Enum.Font.GothamBold
 CloseButton.Text = "X"
 CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseButton.TextSize = 18
-CloseButton.TextScaled = true
 CloseButton.Parent = TopBar
 CloseButton.ZIndex = 999999
 
+-- ==================== CONTAINER DE ABAS (FIXO) ====================
 local TabContainer = Instance.new("Frame")
 TabContainer.Name = "TabContainer"
 TabContainer.BackgroundTransparency = 1
@@ -152,6 +154,7 @@ TabContainer.Parent = MainFrame
 TabContainer.ZIndex = 999999
 TabContainer.ClipsDescendants = false
 
+-- ==================== CONTAINER DE CONTEÚDO ====================
 local ContentContainer = Instance.new("Frame")
 ContentContainer.Name = "ContentContainer"
 ContentContainer.BackgroundTransparency = 1
@@ -161,11 +164,66 @@ ContentContainer.Parent = MainFrame
 ContentContainer.ZIndex = 999999
 ContentContainer.ClipsDescendants = true
 
+-- ==================== BARRA DE PESQUISA ====================
+local SearchBar = Instance.new("Frame")
+SearchBar.Name = "SearchBar"
+SearchBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+SearchBar.BorderSizePixel = 0
+SearchBar.Size = UDim2.new(1, 0, 0.08, 0)
+SearchBar.Position = UDim2.new(0, 0, 0, 0)
+SearchBar.Parent = ContentContainer
+SearchBar.ZIndex = 999999
+
+local SearchBarStroke = Instance.new("UIStroke")
+SearchBarStroke.Color = Color3.fromRGB(40, 40, 40)
+SearchBarStroke.Thickness = 1
+SearchBarStroke.Parent = SearchBar
+
+local SearchTextBox = Instance.new("TextBox")
+SearchTextBox.Name = "SearchTextBox"
+SearchTextBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SearchTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+SearchTextBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+SearchTextBox.PlaceholderText = "Search..."
+SearchTextBox.Size = UDim2.new(0.85, 0, 0.8, 0)
+SearchTextBox.Position = UDim2.new(0.05, 0, 0.1, 0)
+SearchTextBox.Font = Enum.Font.SourceSans
+SearchTextBox.TextSize = 12
+SearchTextBox.Parent = SearchBar
+SearchTextBox.ZIndex = 999999
+SearchTextBox.ClearTextOnFocus = false
+
+local SearchTextBoxStroke = Instance.new("UIStroke")
+SearchTextBoxStroke.Color = Color3.fromRGB(100, 100, 100)
+SearchTextBoxStroke.Thickness = 1
+SearchTextBoxStroke.Parent = SearchTextBox
+
+local ClearButton = Instance.new("TextButton")
+ClearButton.Name = "ClearButton"
+ClearButton.BackgroundTransparency = 1
+ClearButton.Text = "✕"
+ClearButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+ClearButton.TextSize = 14
+ClearButton.Size = UDim2.new(0.08, 0, 0.8, 0)
+ClearButton.Position = UDim2.new(0.87, 0, 0.1, 0)
+ClearButton.Parent = SearchBar
+ClearButton.ZIndex = 999999
+ClearButton.Visible = false
+
+ClearButton.MouseButton1Click:Connect(function()
+    SearchTextBox.Text = ""
+    ClearButton.Visible = false
+end)
+
+SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+    ClearButton.Visible = #SearchTextBox.Text > 0
+end)
+
 local MainContent = Instance.new("ScrollingFrame")
 MainContent.Name = "MainContent"
 MainContent.BackgroundTransparency = 1
-MainContent.Size = UDim2.new(1, 0, 0.82, 0)
-MainContent.Position = UDim2.new(0, 0, 0.02, 0)
+MainContent.Size = UDim2.new(1, 0, 0.92, -8)
+MainContent.Position = UDim2.new(0, 0, 0.08, 4)
 MainContent.ScrollBarThickness = 2
 MainContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 MainContent.Parent = ContentContainer
@@ -175,13 +233,16 @@ local ContentListLayout = Instance.new("UIListLayout")
 ContentListLayout.Padding = UDim.new(0, 8)
 ContentListLayout.Parent = MainContent
 
+-- ==================== VARIÁVEIS ====================
 local tabs = {}
 local activeTab = "Main"
 local notificationTimers = {}
 local speedValue = 32
 local flySpeed = 32
 local connectionStorage = {}
+local optionElementsMap = {}
 
+-- ==================== FUNÇÕES DE NOTIFICAÇÃO ====================
 local function showNotification(title, iconId, duration)
 	local notificationScreenGui = Instance.new("ScreenGui")
 	notificationScreenGui.Name = "NotificationScreenGui"
@@ -216,7 +277,6 @@ local function showNotification(title, iconId, duration)
 	notificationLabel.Font = Enum.Font.Gotham
 	notificationLabel.Text = title
 	notificationLabel.TextWrapped = true
-	notificationLabel.TextScaled = true
 	notificationLabel.TextXAlignment = Enum.TextXAlignment.Left
 	notificationLabel.Parent = notificationGui
 
@@ -285,6 +345,7 @@ local function showNotification(title, iconId, duration)
 	end)
 end
 
+-- ==================== FUNÇÕES DE DEBOUNCE ====================
 local function createDebounce(key, duration)
     if not optionStates["_debounce"] then optionStates["_debounce"] = {} end
     if optionStates["_debounce"][key] then return false end
@@ -293,6 +354,7 @@ local function createDebounce(key, duration)
     return true
 end
 
+-- ==================== FUNÇÕES DE CRIAÇÃO DE ELEMENTOS ====================
 local function createTab(name, iconId, position)
     local TabButton = Instance.new("TextButton")
     TabButton.Name = name
@@ -325,7 +387,7 @@ local function createTab(name, iconId, position)
     IconLabel.ZIndex = 999999
 
     local TextLabel = Instance.new("TextLabel")
-    TextLabel.Size = UDim2.new(0.259, 0, 1, 0)
+    TextLabel.Size = UDim2.new(0.65, 0, 1, 0)
     TextLabel.Position = UDim2.new(0.4, 0, 0, 0)
     TextLabel.BackgroundTransparency = 1
     TextLabel.Text = name
@@ -333,8 +395,6 @@ local function createTab(name, iconId, position)
     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
     TextLabel.Font = Enum.Font.SourceSansBold
     TextLabel.TextSize = 14
-    TextLabel.TextScaled = true
-    TextLabel.TextWrapped = false
     TextLabel.Parent = TabButton
     TextLabel.ZIndex = 999999
 
@@ -357,6 +417,9 @@ local function createTab(name, iconId, position)
                 element.Visible = true
             end
 
+            SearchTextBox.Text = ""
+            ClearButton.Visible = false
+
             MainContent.CanvasSize = UDim2.new(0, 0, 0, ContentListLayout.AbsoluteContentSize.Y + 20)
         end
     end)
@@ -376,7 +439,7 @@ local function createOption(name, startActive, tabName, callback)
     local currentActive = optionStates[name]
 
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0.962, 0, 0.09, 0)
+    Container.Size = UDim2.new(1, -16, 0, 50)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.Name = name
@@ -401,8 +464,6 @@ local function createOption(name, startActive, tabName, callback)
     Label.TextXAlignment = Enum.TextXAlignment.Left
     Label.Font = Enum.Font.SourceSans
     Label.TextSize = 14
-    Label.TextWrapped = true
-    Label.TextScaled = true
     Label.Parent = Container
     Label.ZIndex = 999999
 
@@ -465,6 +526,7 @@ local function createOption(name, startActive, tabName, callback)
     end
 
     table.insert(tabs[tabName].elements, Container)
+    optionElementsMap[Container] = name
     return function() return optionStates[name] end, Container, SwitchBG
 end
 
@@ -473,7 +535,7 @@ local function createSlider(name, min, max, default, tabName, callback)
     local currentVal = optionStates[name]
 
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0.962, 0, 0.1, 0)
+    Container.Size = UDim2.new(1, -16, 0, 70)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.ZIndex = 999999
@@ -497,8 +559,6 @@ local function createSlider(name, min, max, default, tabName, callback)
     Label.TextXAlignment = Enum.TextXAlignment.Left
     Label.Font = Enum.Font.SourceSans
     Label.TextSize = 14
-    Label.TextWrapped = true
-    Label.TextScaled = true
     Label.Parent = Container
     Label.ZIndex = 999999
 
@@ -577,11 +637,12 @@ local function createSlider(name, min, max, default, tabName, callback)
     end)
 
     table.insert(tabs[tabName].elements, Container)
+    optionElementsMap[Container] = name
 end
 
 local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0.962, 0, 0.1, 0)
+    Container.Size = UDim2.new(1, -16, 0, 50)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.ZIndex = 999999
@@ -605,8 +666,6 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Font = Enum.Font.SourceSansBold
     TitleLabel.TextSize = 14
-    TitleLabel.TextWrapped = true
-    TitleLabel.TextScaled = true
     TitleLabel.Parent = Container
     TitleLabel.ZIndex = 999999
 
@@ -619,8 +678,6 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     DescLabel.TextXAlignment = Enum.TextXAlignment.Left
     DescLabel.Font = Enum.Font.SourceSans
     DescLabel.TextSize = 11
-    DescLabel.TextWrapped = true
-    DescLabel.TextScaled = true
     DescLabel.Parent = Container
     DescLabel.ZIndex = 999999
 
@@ -638,11 +695,12 @@ local function createInfoBox(title, desc, tabName, isButton, linkToCopy)
     end
 
     table.insert(tabs[tabName].elements, Container)
+    optionElementsMap[Container] = title
 end
 
 local function createSpecialButton(name, tabName, callback)
     local Container = Instance.new("Frame")
-    Container.Size = UDim2.new(0.962, 0, 0.09, 0)
+    Container.Size = UDim2.new(1, -16, 0, 50)
     Container.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
     Container.Parent = MainContent
     Container.Name = name
@@ -666,8 +724,6 @@ local function createSpecialButton(name, tabName, callback)
     Label.TextXAlignment = Enum.TextXAlignment.Center
     Label.Font = Enum.Font.SourceSans
     Label.TextSize = 14
-    Label.TextWrapped = true
-    Label.TextScaled = true
     Label.Parent = Container
     Label.ZIndex = 999999
 
@@ -682,14 +738,19 @@ local function createSpecialButton(name, tabName, callback)
     end)
 
     table.insert(tabs[tabName].elements, Container)
+    optionElementsMap[Container] = name
 end
 
+-- ==================== CRIAÇÃO DAS ABAS COM POSIÇÕES CORRIGIDAS ====================
 tabs["Main"] = createTab("Main", "139357095045310", UDim2.new(0.08, 0, 0, 0))
 tabs["Farm"] = createTab("Farm", "102352181267949", UDim2.new(0.08, 0, 0.16, 0))
 tabs["Buy"] = createTab("Buy ALL", "110805385284419", UDim2.new(0.08, 0, 0.32, 0))
 tabs["Config"] = createTab("Config", "114794077382466", UDim2.new(0.08, 0, 0.48, 0))
 tabs["Credits"] = createTab("Credits", "99243311837005", UDim2.new(0.08, 0, 0.64, 0))
 
+-- ==================== POPULAÇÃO DAS ABAS ====================
+
+-- ABA MAIN
 createOption("Auto Collect Money", false, "Main", function(state)
     getgenv().AutoCollect = state
 
@@ -906,6 +967,7 @@ createOption("Low Mode", false, "Main", function(state)
     end
 end)
 
+-- ABA FARM
 createOption("Auto Common", false, "Farm")
 createOption("Auto Uncommon", false, "Farm")
 createOption("Auto Rare", false, "Farm")
@@ -916,10 +978,12 @@ createOption("Auto Secret", false, "Farm")
 createOption("Auto Ancient", false, "Farm")
 createOption("Auto Divine", false, "Farm")
 
+-- ABA BUY
 createOption("Auto Power", false, "Buy")
 createOption("Auto Reach", false, "Buy")
 createOption("Auto Carry", false, "Buy")
 
+-- ABA CONFIG
 createSpecialButton("Auto Rejoin", "Config", function()
     TeleportService:Teleport(game.PlaceId)
 end)
@@ -942,15 +1006,55 @@ end)
 createOption("Noclip", false, "Config")
 createOption("Enable Shift Lock", false, "Config")
 
+-- ABA CREDITS
 createInfoBox("By: Cleiton10HDx", "Script created by this user.", "Credits", false)
 createInfoBox("Discord", "My Discord Server", "Credits", true, "https://discord.gg/72P6NhC5Pf")
 
+-- ==================== FUNÇÃO DE FILTRO DE PESQUISA ====================
+local function updateSearchFilter()
+    local searchText = SearchTextBox.Text:lower()
+    local visibleCount = 0
+
+    for _, element in pairs(MainContent:GetChildren()) do
+        if element:IsA("GuiObject") and element.Name ~= "UIListLayout" then
+            local elementName = optionElementsMap[element] or ""
+            local isInActiveTab = false
+
+            for _, tabElement in pairs(tabs[activeTab].elements) do
+                if tabElement == element then
+                    isInActiveTab = true
+                    break
+                end
+            end
+
+            if isInActiveTab then
+                if searchText == "" or elementName:lower():find(searchText, 1, true) then
+                    element.Visible = true
+                    visibleCount = visibleCount + 1
+                else
+                    element.Visible = false
+                end
+            else
+                element.Visible = false
+            end
+        end
+    end
+
+    MainContent.CanvasSize = UDim2.new(0, 0, 0, ContentListLayout.AbsoluteContentSize.Y + 20)
+end
+
+SearchTextBox:GetPropertyChangedSignal("Text"):Connect(function()
+    updateSearchFilter()
+end)
+
+-- ==================== EXIBIÇÃO INICIAL ====================
 for _, element in pairs(tabs["Main"].elements) do
     element.Visible = true
 end
 
 MainContent.CanvasSize = UDim2.new(0, 0, 0, ContentListLayout.AbsoluteContentSize.Y + 20)
 
+-- ==================== EVENTOS DOS BOTÕES ====================
 CloseButton.Activated:Connect(function()
     MainFrame.Visible = false
     ShadowFrame.Visible = false
@@ -961,6 +1065,7 @@ FloatingButton.Activated:Connect(function()
     ShadowFrame.Visible = not ShadowFrame.Visible
 end)
 
+-- ==================== ARRASTAR MENU ====================
 local draggingBtn, dragStartBtn, startPosBtn
 FloatingButton.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -985,6 +1090,7 @@ UserInputService.InputEnded:Connect(function(input)
     end
 end)
 
+-- ==================== FUNÇÕES DE GAMEPLAY ====================
 local LP = game:GetService("Players").LocalPlayer
 local RS = game:GetService("ReplicatedStorage")
 
@@ -1305,6 +1411,7 @@ oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
     return oldNamecall(self, ...)
 end)
 
+-- ==================== SHIFT LOCK ====================
 local shiftLockSystemEnabled = false
 local shiftLockActive = false
 local shiftLockGui = nil
