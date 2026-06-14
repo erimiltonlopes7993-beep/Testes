@@ -185,14 +185,14 @@ SearchTextBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 SearchTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 SearchTextBox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
 SearchTextBox.PlaceholderText = "Search..."
-SearchTextBox.Text = ""
-SearchTextBox.Size = UDim2.new(0.998, 0, 0.958, 0)
+SearchTextBox.Size = UDim2.new(0.998, 0, 0.965, 0)
 SearchTextBox.Position = UDim2.new(0.001, 0, 0.009, 0)
 SearchTextBox.Font = Enum.Font.SourceSans
 SearchTextBox.TextSize = 12
 SearchTextBox.Parent = SearchBar
 SearchTextBox.ZIndex = 999999
 SearchTextBox.ClearTextOnFocus = false
+SearchTextBox.Text = ""
 
 local SearchTextBoxStroke = Instance.new("UIStroke")
 SearchTextBoxStroke.Color = Color3.fromRGB(100, 100, 100)
